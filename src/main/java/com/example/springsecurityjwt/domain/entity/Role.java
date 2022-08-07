@@ -4,22 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 @EqualsAndHashCode(callSuper = false)
-public class Role extends AuditingEntity implements GrantedAuthority {
+public class Role extends AuditingEntity {
 
   @Id @GeneratedValue private Long id;
 
   private String name;
-
-  @Override
-  public String getAuthority() {
-    return name;
-  }
 }

@@ -1,6 +1,6 @@
 -- roles
-INSERT INTO roles (id, name, created_at, updated_at) VALUES (1, 'USER', CURRENT_TIMESTAMP, null);
-INSERT INTO roles (id, name, created_at, updated_at) VALUES (2, 'ADMIN', CURRENT_TIMESTAMP, null);
+INSERT INTO roles (id, name, created_at, updated_at) VALUES (1, 'ROLE_USER', CURRENT_TIMESTAMP, null);
+INSERT INTO roles (id, name, created_at, updated_at) VALUES (2, 'ROLE_ADMIN', CURRENT_TIMESTAMP, null);
 
 -- users
 INSERT INTO users (id, username, password, created_at, updated_at) VALUES (1, 'admin', '$2a$10$vSHN5QFT8Uizj4zea11uUewdJuxcrst4VulG3lDBe5pyc0YX5JNFO', CURRENT_TIMESTAMP, null);
