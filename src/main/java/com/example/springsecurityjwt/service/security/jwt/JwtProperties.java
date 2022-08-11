@@ -12,5 +12,7 @@ public class JwtProperties {
 
   private String issuer = "http://localhost:8080/login";
 
-  private long expiresMills = Duration.ofDays(1).toMillis();
+  private long expiresSec = Duration.ofDays(1).toSeconds();
+
+  private long refreshExpiresSec = Duration.ofDays(7).toSeconds();
 }

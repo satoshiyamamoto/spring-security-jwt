@@ -1,5 +1,7 @@
 package com.example.springsecurityjwt.service.security.jwt;
 
+import com.example.springsecurityjwt.service.security.user.GrantedAuthorityMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,19 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-  private final JwtAuthenticationProvider jwtAuthenticationProvider;
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
+  private final JwtAccessTokenService jwtAuthenticationService;
 
   public JwtAuthenticationFilter(
-      AuthenticationManager authenticationManager,
-      JwtAuthenticationProvider jwtAuthenticationProvider) {
+      AuthenticationManager authenticationManager, JwtAccessTokenService jwtAuthenticationService) {
     super(authenticationManager);
-    this.jwtAuthenticationProvider = jwtAuthenticationProvider;
+    this.jwtAuthenticationService = jwtAuthenticationService;
   }
 
   @Override
@@ -30,9 +34,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain,
       Authentication authResult)
       throws IOException, ServletException {
-    val accessToken = jwtAuthenticationProvider.createAccessToken(authResult);
+    val accessTokens =
+        jwtAuthenticationService.createAccessTokens(
+            authResult.getName(), GrantedAuthorityMapper.toStrings(authResult.getAuthorities()));
 
     response.setStatus(HttpStatus.OK.value());
-    response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+    response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+    objectMapper.writeValue(response.getWriter(), accessTokens);
   }
 }
