@@ -26,11 +26,11 @@ public class SecurityConfiguration {
     return http.authorizeHttpRequests(
             authz ->
                 authz
-                    .mvcMatchers("/login")
+                    .requestMatchers("/login")
                     .permitAll()
-                    .mvcMatchers("/user/**")
+                    .requestMatchers("/user/**")
                     .hasRole("USER")
-                    .mvcMatchers("/admin/**")
+                    .requestMatchers("/admin/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated())
